@@ -32,9 +32,8 @@ export default function Footer() {
   return (
     <footer className="bg-background py-16 ">
       <div className="mx-auto max-w-5xl px-6">
-        <Link href="/" aria-label="go home" className="mx-auto flex size-fit items-center gap-1">
+        <Link href="/" aria-label="go home" className="mx-auto block w-fit">
           <Logo />
-          <span className="text-foreground text-lg font-normal tracking-tight">NoteBase</span>
         </Link>
 
         <div className="my-8 flex flex-wrap justify-center gap-6">

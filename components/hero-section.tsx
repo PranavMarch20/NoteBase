@@ -23,7 +23,7 @@ export default function HeroSection() {
                                         variant="outline"
                                         className="shine-effect"
                                         render={
-                                            <Link href="#link">
+                                            <Link href="/dashboard">
                                                 <span className="text-nowrap">Start Taking Notes</span>
                                             </Link>
                                         }
@@ -33,7 +33,7 @@ export default function HeroSection() {
 
                             <div className="relative mt-16 sm:mr-0">
                                 <div 
-                                    className="bg-background rounded-(--radius) relative mx-auto overflow-hidden border border-transparent shadow-lg shadow-black/10 ring-1 ring-black/10 animate-fade-in-up delay-400 sm:w-full w-[430px]"
+                                    className="bg-background rounded-(--radius) relative mx-auto overflow-hidden border border-transparent shadow-lg shadow-black/10 ring-1 ring-black/10 animate-fade-in-up delay-400 sm:w-full w-107.5"
                                     style={{
                                         maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
                                         WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)'

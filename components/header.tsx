@@ -10,7 +10,7 @@ import { ModeToggle } from "./mode-toggle";
 type menuItem = {
   name: string;
   href: string;
-}
+};
 
 const menuItems: menuItem[] = [
   { name: "Features", href: "#link" },
@@ -35,8 +35,7 @@ export const HeroHeader = () => {
         data-state={menuState && "active"}
         className={cn(
           "fixed z-20 w-full transition-all duration-300 border-b bg-background/75 backdrop-blur-lg",
-          isScrolled &&
-          "border-b border-black/5",
+          isScrolled && "border-b border-black/5",
         )}
       >
         <div className="mx-auto max-w-5xl px-6 animate-fade-in-up delay-500">
@@ -45,10 +44,9 @@ export const HeroHeader = () => {
               <Link
                 href="/"
                 aria-label="home"
-                className="flex items-center gap-1"
+                className="pt-1"
               >
                 <Logo />
-                <span className="text-foreground text-lg font-normal tracking-tight">NoteBase</span>
               </Link>
 
               <button
@@ -87,7 +85,7 @@ export const HeroHeader = () => {
                     <li key={index}>
                       <Link
                         href={item.href}
-                        className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                        className="text-muted-foreground hover:text-accent-foreground block duration-150 "
                       >
                         <span>{item.name}</span>
                       </Link>
@@ -95,7 +93,7 @@ export const HeroHeader = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:w-full">
                 <ModeToggle />
                 <Button
                   nativeButton={false}
@@ -103,7 +101,7 @@ export const HeroHeader = () => {
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                   render={
-                    <Link href="#">
+                    <Link href="/auth/login">
                       <span>Login</span>
                     </Link>
                   }
@@ -113,7 +111,7 @@ export const HeroHeader = () => {
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                   render={
-                    <Link href="#">
+                    <Link href="/auth/signup">
                       <span>Sign Up</span>
                     </Link>
                   }
@@ -123,7 +121,7 @@ export const HeroHeader = () => {
                   size="sm"
                   className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
                   render={
-                    <Link href="#">
+                    <Link href="/auth/get-started">
                       <span>Get Started</span>
                     </Link>
                   }

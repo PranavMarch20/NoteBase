@@ -10,7 +10,7 @@ export default function Features() {
           <br /> Built for how you actually think and write.
         </h2>
         <div className="*:bg-background mt-8 grid gap-3 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="p-8">
+          <Card className="p-8 dark:bg-transparent">
             <p className="text-muted-foreground max-w-xs text-lg font-medium">
               <span className="text-foreground">Full Markdown support.</span>{" "}
               Write with the syntax you already know — headings, lists,
@@ -29,16 +29,14 @@ export default function Features() {
               </div>
             </div>
           </Card>
-          <Card>
-            <div className="p-8">
-              <p className="text-muted-foreground max-w-xs text-lg font-medium">
-                <span className="text-foreground">
-                  Code snippets with syntax highlighting.
-                </span>{" "}
-                Paste and display code in any language — beautifully formatted
-                every time.
-              </p>
-            </div>
+          <Card className="p-8 dark:bg-transparent">
+            <p className="text-muted-foreground max-w-xs text-lg font-medium">
+              <span className="text-foreground">
+                Code snippets with syntax highlighting.
+              </span>{" "}
+              Paste and display code in any language — beautifully formatted
+              every time.
+            </p>
 
             <div className="mask-x-from-65% relative mt-6 pt-2">
               <div
@@ -47,7 +45,7 @@ export default function Features() {
               ></div>
             </div>
           </Card>
-          <Card className="p-8">
+          <Card className="p-8 dark:bg-transparent">
             <p className="text-muted-foreground max-w-xs text-lg font-medium">
               <span className="text-foreground">Organized your way.</span> Use
               notebooks, tags, and folders to keep every project, idea, and

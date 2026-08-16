@@ -17,11 +17,26 @@ export const signInUser = async ({
       },
     });
 
-    return { success: true, message: "Signed in successfully" };
+    return {
+      success: true,
+      message: "Signed in successfully",
+    };
   } catch (error) {
     const e = error as Error;
-    console.log("This is the error from the server", e.message);
-    return { success: false, message: e.message || "Failed to sign in" };
+
+    if (e.message === "Email not verified") {
+      return {
+        success: false,
+        code: "EMAIL_NOT_VERIFIED",
+        message: "Please verify your email before signing in.",
+      };
+    }
+
+    return {
+      success: false,
+      code: "SIGN_IN_FAILED",
+      message: e.message || "Failed to sign in",
+    };
   }
 };
 
@@ -40,6 +55,7 @@ export const signUpUser = async ({
         email,
         password,
         name,
+        callbackURL: "/dashboard",
       },
     });
 

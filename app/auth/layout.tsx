@@ -15,7 +15,7 @@ export default function AuthLayout({
         className="absolute px-20 py-4 left-6 top-6 z-10 inline-flex items-center gap-1.5 text-md font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" />
-        Backs
+        Back to Home
       </Link>
       <Logo className="absolute px-20 py-4 right-6 top-6 z-10 inline-flex items-center gap-1.5 text-md font-medium text-muted-foreground transition-colors hover:text-foreground" />
       {children}

@@ -52,16 +52,27 @@ export function LoginForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+
       const response = await signInUser({
         email: values.email,
         password: values.password,
       });
+
       if (response.success) {
         toast.success(response.message);
         router.push("/dashboard");
-      } else {
-        toast.error(response.message);
+        return;
       }
+
+      if (response.code === "EMAIL_NOT_VERIFIED") {
+        toast.error(response.message);
+        router.push(
+          `/auth/verify-email?email=${encodeURIComponent(values.email)}`,
+        );
+        return;
+      }
+
+      toast.error(response.message);
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
@@ -85,7 +96,10 @@ export function LoginForm({
                 name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <FieldLabel htmlFor="email">Email</FieldLabel>
                     <Input
                       className="text-md"
@@ -105,11 +119,14 @@ export function LoginForm({
                 name="password"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <div className="flex items-center">
                       <FieldLabel htmlFor="password">Password</FieldLabel>
                       <Link
-                        href="#"
+                        href="/auth/forgot-password"
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                       >
                         Forgot your password?
@@ -142,7 +159,7 @@ export function LoginForm({
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
-                  <Link href="/signup">Sign up</Link>
+                  <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

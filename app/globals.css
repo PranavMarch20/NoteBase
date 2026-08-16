@@ -119,7 +119,7 @@
 
 @layer base {
   ::selection {
-    @apply bg-slate-800 text-purple-800;
+    @apply bg-slate-800 text-white;
   }
   * {
     @apply border-border outline-ring/50;

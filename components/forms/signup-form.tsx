@@ -70,8 +70,10 @@ export function SignupForm({
       });
 
       if (response.success) {
-        toast.success(response.message);
-        router.push("/dashboard");
+        toast.success("Please check your email to verify your account.");
+        router.push(
+          `/auth/verify-email?email=${encodeURIComponent(values.email)}`
+        );
       } else {
         toast.error(response.message);
       }
@@ -190,7 +192,7 @@ export function SignupForm({
                   Sign up with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Already have an account? <Link href="/login">Log in</Link>
+                  Already have an account? <Link href="/auth/login">Log in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

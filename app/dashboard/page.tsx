@@ -1,14 +1,27 @@
-"use client"
+import LogoutBtn from "@/components/logout-btn";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-import LogoutBtn from '@/components/logout-btn'
+const Dashboard = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-const Dashboard = () => {
+  if (!session) {
+    redirect("/");
+  }
+
+  if (!session.user.emailVerified) {
+    redirect("/auth/verify-email");
+  }
+
   return (
-    <div>
-      <h1>dashboard</h1>
+    <div className="flex flex-col gap-4 mx-auto">
+      <h1>Dashboard</h1>
       <LogoutBtn />
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

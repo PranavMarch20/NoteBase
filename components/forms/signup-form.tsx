@@ -28,6 +28,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.email({ message: "Please enter a valid email address" }),
@@ -43,6 +44,7 @@ export function SignupForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,9 +57,35 @@ export function SignupForm({
     },
   });
 
+  const signUpWithGoogle = async () => {
+    try {
+      setIsLoadingGoogle(true);
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to sign up with Google");
+        return;
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to sign up with Google",
+      );
+    } finally {
+      setTimeout(() => {
+        setIsLoadingGoogle(false);
+      }, 5000);
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
+
       if (values.password !== values.confirmPassword) {
         toast.error("Passwords do not match!");
         return;
@@ -71,14 +99,21 @@ export function SignupForm({
 
       if (response.success) {
         toast.success("Please check your email to verify your account.");
+
         router.push(
-          `/auth/verify-email?email=${encodeURIComponent(values.email)}`
+          `/auth/verify-email?email=${encodeURIComponent(values.email)}`,
         );
-      } else {
-        toast.error(response.message);
+
+        return;
       }
+
+      toast.error(response.message);
     } catch (error) {
-      toast.error((error as Error).message);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create your account.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +135,10 @@ export function SignupForm({
                 name="name"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <FieldLabel htmlFor="name">Name</FieldLabel>
                     <Input
                       className="text-md"
@@ -120,7 +158,10 @@ export function SignupForm({
                 name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <FieldLabel htmlFor="email">Email</FieldLabel>
                     <Input
                       className="text-md"
@@ -140,7 +181,10 @@ export function SignupForm({
                 name="password"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <FieldLabel htmlFor="password">Password</FieldLabel>
                     <Input
                       className="text-md"
@@ -160,7 +204,10 @@ export function SignupForm({
                 name="confirmPassword"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="flex flex-col gap-2"
+                  >
                     <div className="flex items-center">
                       <FieldLabel htmlFor="confirmPassword">
                         Confirm Password
@@ -188,11 +235,21 @@ export function SignupForm({
                     "Sign up"
                   )}
                 </Button>
-                <Button variant="outline" type="button" disabled={isLoading}>
-                  Sign up with Google
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={signUpWithGoogle}
+                  disabled={isLoadingGoogle}
+                >
+                  {isLoadingGoogle ? (
+                    <Loader2 className="animate-spin size-4" />
+                  ) : (
+                    "Sign up with Google"
+                  )}
                 </Button>
                 <FieldDescription className="text-center">
-                  Already have an account? <Link href="/auth/login">Log in</Link>
+                  Already have an account?{" "}
+                  <Link href="/auth/login">Log in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

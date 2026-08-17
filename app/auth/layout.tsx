@@ -11,7 +11,7 @@ export default function AuthLayout({
     <div className="relative mx-auto w-full max-w-5xl">
       <Link
         href="/"
-        aria-label="Go back"
+        aria-label="Back to Home"
         className="absolute px-20 py-4 left-6 top-6 z-10 inline-flex items-center gap-1.5 text-md font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" />

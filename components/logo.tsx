@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 export const LogoIcon = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={cn("text-foreground h-5 w-5", className)}
+      className={cn("text-foreground h-6 w-6 ", className)}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -52,15 +52,11 @@ export const LogoIcon = ({ className }: { className?: string }) => {
   );
 };
 
-export const Logo = ({
-  className
-}: {
-  className?: string;
-}) => {
+export const Logo = ({ className }: { className?: string }) => {
   return (
-    <div className={`flex items-center gap-1 ${className}`}>
+    <div className={`flex items-center gap-1 mb-1.5 ${className}`}>
       <LogoIcon />
-      <span className="text-foreground text-lg font-normal tracking-tight">
+      <span className="text-foreground text-xl font-normal tracking-tight mt-0.5">
         NoteBase
       </span>
     </div>

@@ -1,9 +1,10 @@
 import LogoutBtn from "@/components/logout-btn";
+import PageWrapper from "@/components/page-wrapper";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const Dashboard = async () => {
+export default async function Page() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -17,11 +18,9 @@ const Dashboard = async () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 mx-auto">
+    <PageWrapper breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Test", href: "/test" }]}>
       <h1>Dashboard</h1>
       <LogoutBtn />
-    </div>
+    </PageWrapper>
   );
-};
-
-export default Dashboard;
+}

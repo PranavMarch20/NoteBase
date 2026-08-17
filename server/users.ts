@@ -61,8 +61,17 @@ export const signUpUser = async ({
 
     return { success: true, message: "Signed up successfully" };
   } catch (error) {
-    const e = error as Error;
-    console.log("This is the error from the server", e.message);
-    return { success: false, message: e.message || "Failed to sign up" };
+    console.error("Signup error:", error);
+
+    const e = error as {
+      message?: string;
+      code?: string;
+    };
+
+    return {
+      success: false,
+      message: e.message || "Failed to sign up",
+      code: e.code,
+    };
   }
 };

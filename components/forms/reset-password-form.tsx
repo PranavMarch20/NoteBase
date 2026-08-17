@@ -70,19 +70,13 @@ export function ResetPasswordForm({
     try {
       setIsLoading(true);
 
-      const { data, error } = await authClient.resetPassword({
+      const { error } = await authClient.resetPassword({
         newPassword: values.password,
         token,
       });
 
-      console.log("RESET PASSWORD RESULT:", {
-        data,
-        error,
-      });
-
       if (error) {
         console.error("RESET PASSWORD ERROR:", error);
-
         toast.error(
           error.message || "Password reset failed. Please try again.",
         );
@@ -91,15 +85,9 @@ export function ResetPasswordForm({
       }
 
       toast.success("Password reset successfully!");
-
       form.reset();
-
-      console.log("RESET PASSWORD RESULT:", {
-        data,
-        error,
-      });
-
       router.push("/auth/login");
+      
     } catch (error) {
       console.error("RESET PASSWORD EXCEPTION:", error);
 

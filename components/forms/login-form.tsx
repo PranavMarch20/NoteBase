@@ -28,6 +28,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.email({ message: "Please enter a valid email address" }),
@@ -39,6 +40,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,6 +50,32 @@ export function LoginForm({
       password: "",
     },
   });
+
+  const signIn = async () => {
+    try {
+      setIsLoadingGoogle(true);
+
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to sign in with Google");
+        return;
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to sign in with Google",
+      );
+    } finally {
+      setTimeout(() => {
+        setIsLoadingGoogle(false);
+      }, 5000);
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -139,7 +167,7 @@ export function LoginForm({
                       type="password"
                       placeholder="********"
                       autoComplete="current-password"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -147,15 +175,24 @@ export function LoginForm({
                 )}
               />
               <Field>
-                <Button type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading || isLoadingGoogle}>
                   {isLoading ? (
                     <Loader2 className="animate-spin size-4" />
                   ) : (
                     "Login"
                   )}
                 </Button>
-                <Button variant="outline" type="button" disabled={isLoading}>
-                  Login with Google
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={signIn}
+                  disabled={isLoadingGoogle || isLoading}
+                >
+                  {isLoadingGoogle ? (
+                    <Loader2 className="animate-spin size-4" />
+                  ) : (
+                    "Login with Google"
+                  )}
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}

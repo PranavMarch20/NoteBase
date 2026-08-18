@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 import { SearchForm } from "@/components/search-form";
@@ -24,148 +22,27 @@ import {
 import { Logo } from "./logo";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { getNotebooks } from "@/server/notebooks";
 
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Build Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const notebooks = await getNotebooks();
+
+  const data = {
+    navMain: [
+      ...(notebooks.notebooksByUser?.map((notebook) => ({
+        title: notebook.name,
+        url: `/dashboard/${notebook.id}`,
+        items: notebook.notes.map((note) => ({
+          title: note.title,
+          url: `/dashboard/${notebook.id}/notes/${note.id}`,
+          isActive: false,
+        })),
+      })) ?? []),
+    ],
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -192,8 +69,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem>
                   <SidebarMenuButton render={<CollapsibleTrigger />}>
                     {item.title}{" "}
-                    <PlusIcon className="ml-auto group-aria-expanded/menu-button:hidden" />
-                    <MinusIcon className="ml-auto hidden group-aria-expanded/menu-button:block" />
+                    {item.items.length > 0 && (
+                      <PlusIcon className="ml-auto group-aria-expanded/menu-button:hidden" />
+                    )}
+                    {item.items.length > 0 && (
+                      <MinusIcon className="ml-auto hidden group-aria-expanded/menu-button:block" />
+                    )}
                   </SidebarMenuButton>
                   {item.items?.length ? (
                     <CollapsibleContent>

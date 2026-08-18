@@ -124,9 +124,7 @@ export function SignupForm({
       <Card className="gap-4">
         <CardHeader>
           <CardTitle>Create an Account</CardTitle>
-          <CardDescription>
-            Enter your details below to create an account
-          </CardDescription>
+          <CardDescription>Enter your details below</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -147,7 +145,7 @@ export function SignupForm({
                       type="text"
                       placeholder="John Doe"
                       autoComplete="name"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -170,7 +168,7 @@ export function SignupForm({
                       type="email"
                       placeholder="john@example.com"
                       autoComplete="email"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -193,7 +191,7 @@ export function SignupForm({
                       type="password"
                       placeholder="********"
                       autoComplete="current-password"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -220,7 +218,7 @@ export function SignupForm({
                       type="password"
                       placeholder="********"
                       autoComplete="current-password"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -228,7 +226,7 @@ export function SignupForm({
                 )}
               />
               <Field>
-                <Button type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading || isLoadingGoogle}>
                   {isLoading ? (
                     <Loader2 className="animate-spin size-4" />
                   ) : (

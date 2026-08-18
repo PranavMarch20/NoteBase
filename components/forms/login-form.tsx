@@ -51,7 +51,7 @@ export function LoginForm({
     },
   });
 
-  const signIn = async () => {
+  const signInWithGoogle = async () => {
     try {
       setIsLoadingGoogle(true);
 
@@ -136,7 +136,7 @@ export function LoginForm({
                       type="email"
                       placeholder="john@example.com"
                       autoComplete="email"
-                      disabled={isLoading}
+                      disabled={isLoading || isLoadingGoogle}
                       aria-invalid={fieldState.invalid}
                     />
                     <FieldError errors={[fieldState.error]} />
@@ -185,7 +185,7 @@ export function LoginForm({
                 <Button
                   variant="outline"
                   type="button"
-                  onClick={signIn}
+                  onClick={signInWithGoogle}
                   disabled={isLoadingGoogle || isLoading}
                 >
                   {isLoadingGoogle ? (

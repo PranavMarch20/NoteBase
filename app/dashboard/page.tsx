@@ -1,26 +1,23 @@
-import LogoutBtn from "@/components/logout-btn";
 import PageWrapper from "@/components/page-wrapper";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { getNotebooks } from "@/server/notebooks";
+import { CreateNotebookBtn } from "@/components/create-notebook-btn";
 
 export default async function Page() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    redirect("/");
-  }
-
-  if (!session.user.emailVerified) {
-    redirect("/auth/verify-email");
-  }
-
+  const notebooks = await getNotebooks();
   return (
-    <PageWrapper breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Test", href: "/test" }]}>
-      <h1>Dashboard</h1>
-      <LogoutBtn />
+    <PageWrapper breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }]}>
+      <h1>Notebooks</h1>
+      <CreateNotebookBtn />
+      
+      {notebooks.success && 
+        notebooks?.notebooksByUser?.map((notebook) => (
+          <div key={notebook.id}>{notebook.name}</div>
+        ))
+      }
+
+      {notebooks.success && notebooks?.notebooksByUser?.length === 0 && (
+        <div>No notebooks found</div>
+      )}
     </PageWrapper>
   );
 }

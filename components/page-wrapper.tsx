@@ -3,10 +3,11 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import React from "react";
 import { SidebarTrigger } from "./ui/sidebar";
+import LogoutBtn from "./logout-btn";
+import { ModeToggle } from "./mode-toggle";
 
 interface PageWrapperProps {
   children: React.ReactNode;
@@ -21,26 +22,30 @@ export default function PageWrapper({
   breadcrumbs,
 }: PageWrapperProps) {
   return (
-    <div className="flex flex-col gap-4 py-1.5">
-      <header className="flex items-center gap-4 px-4 py-2">
-        <SidebarTrigger />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            {breadcrumbs.map((breadcrumb) => (
-              <BreadcrumbItem key={breadcrumb.label}>
-                <BreadcrumbLink href={breadcrumb.href}>
-                  {breadcrumb.label}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
+    <div className="flex flex-col gap-4">
+      <header className="flex items-center px-4 py-3 justify-between border-b">
+        <div className="flex items-center gap-4">
+          <SidebarTrigger />
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadcrumbs.map((breadcrumb) => (
+                <BreadcrumbItem key={breadcrumb.label}>
+                  <BreadcrumbLink href={breadcrumb.href}>
+                    {breadcrumb.label}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <ModeToggle />
+          <LogoutBtn />
+        </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6">{children}</div>
+      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
     </div>
   );
 }

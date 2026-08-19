@@ -18,8 +18,10 @@ export const getNoteById = async (id: string) => {
     const note = await db
       .select()
       .from(notes)
-      .where(eq(notes.id, id));
-    return { success: true, note };
+      .where(eq(notes.id, id))
+      .limit(1);
+      
+    return { success: true, note: note[0] ?? null };
   } catch {
     return { success: false, message: "Failed to get note" };
   }

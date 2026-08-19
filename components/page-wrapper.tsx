@@ -3,8 +3,9 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import React from "react";
+import React, { Fragment } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 import LogoutBtn from "./logout-btn";
 import { ModeToggle } from "./mode-toggle";
@@ -28,12 +29,17 @@ export default function PageWrapper({
           <SidebarTrigger />
           <Breadcrumb>
             <BreadcrumbList>
-              {breadcrumbs.map((breadcrumb) => (
-                <BreadcrumbItem key={breadcrumb.label}>
-                  <BreadcrumbLink href={breadcrumb.href}>
-                    {breadcrumb.label}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
+              {breadcrumbs.map((breadcrumb, index) => (
+                <Fragment key={breadcrumb.label}>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={breadcrumb.href}>
+                      {breadcrumb.label}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  {index !== breadcrumbs.length - 1 && (
+                    <BreadcrumbSeparator />
+                  )}
+                </Fragment>
               ))}
             </BreadcrumbList>
           </Breadcrumb>

@@ -29,7 +29,6 @@ export default async function NotePage({ params }: { params: Params }) {
       ]}
     >
       <text>{note.title}</text>
-      <text>{note.content}</text>
     </PageWrapper>
   );
 }
